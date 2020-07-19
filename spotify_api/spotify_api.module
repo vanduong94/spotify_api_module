@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains spotify_api.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function spotify_api_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the spotify_api module.
+    case 'help.page.spotify_api':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module provide a configurable block which shows spotify results') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function spotify_api_theme() {
+  return [
+    'spotify_api' => [
+      'render element' => 'children',
+    ],
+  ];
+}

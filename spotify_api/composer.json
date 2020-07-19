@@ -1,0 +1,16 @@
+{
+    "name": "spotify_api",
+    "type": "drupal-module",
+    "description": "This module provide a configurable block which shows spotify results",
+    "keywords": [
+    ],
+    "require": {
+        "jwilsson/spotify-web-api-php": "^3.5"
+    },
+    "homepage": "https://www.drupal.org/project/spotify_api",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/spotify_api",
+        "source": "http://cgit.drupalcode.org/spotify_api",
+    },
+}
