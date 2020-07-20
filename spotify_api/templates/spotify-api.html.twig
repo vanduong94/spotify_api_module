@@ -1,1 +1,21 @@
-<!-- Add you custom twig html here -->
+{#
+  /**
+   * @file
+   * Default theme implementation to display tweets.
+   *
+   * Available variables:
+   * - tweets: an array of tweets pulled from the configured Twitter account.
+   */
+#}
+
+{%
+  set classes = [
+    'spotify-results'
+  ]
+%}
+
+<div{{attributes.addClass(classes)}}>
+	{% for item in items %}
+		{{ tweet }}
+	{% endfor %}
+</div>
