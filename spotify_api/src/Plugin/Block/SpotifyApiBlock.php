@@ -26,7 +26,6 @@ class SpotifyApiBlock extends BlockBase
     return [
       'client_id' => '',
       'client_secret' => '',
-      'redirect_uri' => '',
     ];
   }
 
@@ -75,7 +74,6 @@ class SpotifyApiBlock extends BlockBase
     return [
       'client_id' => 'Client ID',
       'client_secret' => 'Client Secret',
-      'redirect_uri' => 'Redirect URI',
     ];
   }
 
@@ -89,19 +87,34 @@ class SpotifyApiBlock extends BlockBase
 
     $client_id = $config['client_id'];
     $client_secret = $config['client_secret'];
-    $redirect_uri = $config['redirect_uri'];
+
+    $host = \Drupal::request()->getSchemeAndHttpHost().'/';
 
     // Move this out into config as well.
-    // $tweet_count_config = '1';
+    // $results_count_config = '1';
 
     $session = new SpotifyWebAPI\Session(
       $client_id,
       $client_secret,
-      $redirect_uri
+      $host
     );
 
-    header('Location: ' . $session->getAuthorizeUrl());
-    die();
+    $api = new SpotifyWebAPI\SpotifyWebAPI();
+
+    if (isset($_GET['code'])) {
+      $session->requestAccessToken($_GET['code']);
+      $api->setAccessToken($session->getAccessToken());
+
+      print_r($api->me());
+    } else {
+      $options = [
+        'scope' => [
+          'user-read-email',
+        ],
+      ];
+
+      header('Location: ' . $session->getAuthorizeUrl($options));
+    }
 
     $build = [];
     $build['#theme'] = 'spotify_api';
