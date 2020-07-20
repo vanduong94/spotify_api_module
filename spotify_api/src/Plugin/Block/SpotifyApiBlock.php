@@ -88,7 +88,7 @@ class SpotifyApiBlock extends BlockBase
     $client_id = $config['client_id'];
     $client_secret = $config['client_secret'];
 
-    $host = \Drupal::request()->getSchemeAndHttpHost().'/';
+    $host = \Drupal::request()->getSchemeAndHttpHost() . '/';
 
     // Move this out into config as well.
     // $results_count_config = '1';
@@ -105,7 +105,9 @@ class SpotifyApiBlock extends BlockBase
       $session->requestAccessToken($_GET['code']);
       $api->setAccessToken($session->getAccessToken());
 
-      print_r($api->me());
+      $album = $api->getAlbum('6KT8x5oqZJl9CcnM66hddo?highlight=spotify:track:6TqXcAFInzjp0bODyvrWEq');
+
+      echo '<b>' . $album->name . '</b>';
     } else {
       $options = [
         'scope' => [
