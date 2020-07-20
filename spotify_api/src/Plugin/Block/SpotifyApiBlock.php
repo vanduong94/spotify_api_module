@@ -101,6 +101,10 @@ class SpotifyApiBlock extends BlockBase
 
     $api = new SpotifyWebAPI\SpotifyWebAPI();
 
+    $build = [];
+    $build['#theme'] = 'spotify_api';
+    $build['#tweets'] = [];
+
     if (isset($_GET['code'])) {
       $session->requestAccessToken($_GET['code']);
       $api->setAccessToken($session->getAccessToken());
@@ -109,8 +113,10 @@ class SpotifyApiBlock extends BlockBase
 
       foreach ($artists->artists as $artist) {
 
+        $artist_url = $artist->href;
+
         $tweet = [
-          '#markup' => $artist,
+          '#markup' => $artist->name,
         ];
 
         $build['#tweets'][] = $tweet;
