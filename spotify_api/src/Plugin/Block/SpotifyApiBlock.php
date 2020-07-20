@@ -105,9 +105,18 @@ class SpotifyApiBlock extends BlockBase
       $session->requestAccessToken($_GET['code']);
       $api->setAccessToken($session->getAccessToken());
 
-      $album = $api->getAlbum('6KT8x5oqZJl9CcnM66hddo?highlight=spotify:track:6TqXcAFInzjp0bODyvrWEq');
+      $artists = $api->getArtistRelatedArtists('6LuN9FCkKOj5PcnpouEgny');
 
-      echo '<b>' . $album->name . '</b>';
+      foreach ($artists->artists as $artist) {
+
+        $tweet = [
+          '#markup' => $artist,
+        ];
+
+        $build['#tweets'][] = $tweet;
+
+        echo '<b>' . $artist->name . '</b> <br>';
+      }
     } else {
       $options = [
         'scope' => [
@@ -117,10 +126,6 @@ class SpotifyApiBlock extends BlockBase
 
       header('Location: ' . $session->getAuthorizeUrl($options));
     }
-
-    $build = [];
-    $build['#theme'] = 'spotify_api';
-    $build['#results'] = [];
 
     return $build;
   }
