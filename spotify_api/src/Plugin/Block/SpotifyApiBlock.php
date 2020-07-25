@@ -90,13 +90,12 @@ class SpotifyApiBlock extends BlockBase
     $client_secret = $config['client_secret'];
     // $results_count_config = $config['results_count_config'];
 
-    // Site URL
     $host = \Drupal::request()->getSchemeAndHttpHost() . '/';
 
     $session = new SpotifyWebAPI\Session(
       $client_id,
-      $client_secret
-      // $host
+      $client_secret,
+      $host
     );
 
     $api = new SpotifyWebAPI\SpotifyWebAPI();
@@ -106,17 +105,22 @@ class SpotifyApiBlock extends BlockBase
     $build['#items'] = [];
 
     if (isset($_GET['code'])) {
+      // $session->requestAccessToken($_GET['code']);
       $session->requestCredentialsToken($_GET['code']);
       $api->setAccessToken($session->getAccessToken());
+      $api->setSession($session);
+      $api->setOptions([
+        'auto_refresh' => true,
+      ]);
 
       $artists = $api->getArtistRelatedArtists('6LuN9FCkKOj5PcnpouEgny');
 
       foreach ($artists->artists as $artist) {
 
-        $artist_url = $artist->href;
+        $artist_url = $artist->external_urls->spotify;
 
         $item = [
-          '#markup' => $artist->name,
+          '#markup' =>  '<a target="_blank" href="' . $artist_url . '">' . $artist->name . '</a>',
         ];
 
         $build['#items'][] = $item;
@@ -128,6 +132,7 @@ class SpotifyApiBlock extends BlockBase
         'scope' => [
           'user-read-email',
         ],
+        'auto_refresh' => true,
       ];
 
       header('Location: ' . $session->getAuthorizeUrl($options));
