@@ -1,10 +1,10 @@
 {#
   /**
    * @file
-   * Default theme implementation to display tweets.
+   * Default theme implementation to display spotify results.
    *
    * Available variables:
-   * - tweets: an array of tweets pulled from the configured Twitter account.
+   * - items: an array of related artists pulled from the configured Spotify account.
    */
 #}
 
@@ -15,7 +15,8 @@
 %}
 
 <div{{attributes.addClass(classes)}}>
+	<h1>Hello Spotify</h1>
 	{% for item in items %}
-		{{ tweet }}
+		<p>{{ item }}</p>
 	{% endfor %}
 </div>
