@@ -74,6 +74,7 @@ class SpotifyApiBlock extends BlockBase
     return [
       'client_id' => 'Client ID',
       'client_secret' => 'Client Secret',
+      // 'results_count_config' => 'Results Count'
     ];
   }
 
@@ -87,16 +88,15 @@ class SpotifyApiBlock extends BlockBase
 
     $client_id = $config['client_id'];
     $client_secret = $config['client_secret'];
+    // $results_count_config = $config['results_count_config'];
 
+    // Site URL
     $host = \Drupal::request()->getSchemeAndHttpHost() . '/';
-
-    // Move this out into config as well.
-    // $results_count_config = '1';
 
     $session = new SpotifyWebAPI\Session(
       $client_id,
-      $client_secret,
-      $host
+      $client_secret
+      // $host
     );
 
     $api = new SpotifyWebAPI\SpotifyWebAPI();
@@ -106,7 +106,7 @@ class SpotifyApiBlock extends BlockBase
     $build['#items'] = [];
 
     if (isset($_GET['code'])) {
-      $session->requestAccessToken($_GET['code']);
+      $session->requestCredentialsToken($_GET['code']);
       $api->setAccessToken($session->getAccessToken());
 
       $artists = $api->getArtistRelatedArtists('6LuN9FCkKOj5PcnpouEgny');
@@ -131,6 +131,7 @@ class SpotifyApiBlock extends BlockBase
       ];
 
       header('Location: ' . $session->getAuthorizeUrl($options));
+      die();
     }
 
     return $build;
